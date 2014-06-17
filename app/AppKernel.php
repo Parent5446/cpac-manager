@@ -40,6 +40,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 	        new FOS\UserBundle\FOSUserBundle(),
             new Cpac\ManagerBundle\CpacManagerBundle(),
+            new Cpac\CommonBundle\CpacCommonBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
