@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+	* This file is part of the CPAC website.
+	* Copyright 2014 Tyler Anthony Romeo
+	*
+	* The CPAC website is free software: you can redistribute it and/or modify
+	* it under the terms of the GNU Affero General Public License as published by
+	* the Free Software Foundation, either version 3 of the License, or
+	* (at your option) any later version.
+	*
+	* Foobar is distributed in the hope that it will be useful,
+	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	* GNU Affero General Public License for more details.
+	*
+	* You should have received a copy of the GNU Affero General Public License
+	* along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+	<import resource="@FOSUserBundle/Resources/config/routing/security.xml"/>
+	<import resource="@FOSUserBundle/Resources/config/routing/profile.xml" prefix="/profile"/>
+	<import resource="@FOSUserBundle/Resources/config/routing/registration.xml" prefix="/register"/>
+	<import resource="@FOSUserBundle/Resources/config/routing/resetting.xml" prefix="/resetting"/>
+	<import resource="@FOSUserBundle/Resources/config/routing/change_password.xml" prefix="/profile"/>
+</routes>

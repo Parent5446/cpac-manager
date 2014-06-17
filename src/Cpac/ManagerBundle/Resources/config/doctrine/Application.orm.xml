@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+	* This file is part of the CPAC website.
+	* Copyright 2014 Tyler Anthony Romeo
+	*
+	* The CPAC website is free software: you can redistribute it and/or modify
+	* it under the terms of the GNU Affero General Public License as published by
+	* the Free Software Foundation, either version 3 of the License, or
+	* (at your option) any later version.
+	*
+	* Foobar is distributed in the hope that it will be useful,
+	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	* GNU Affero General Public License for more details.
+	*
+	* You should have received a copy of the GNU Affero General Public License
+	* along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                    http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+	<entity name="Cpac\ManagerBundle\Entity\Application">
+		<id name="id" type="integer">
+			<generator strategy="AUTO"/>
+		</id>
+
+		<field name="state" type="string" length="64"/>
+		<field name="data" type="blob"/>
+
+		<many-to-one target-entity="User" field="user" inversed-by="applications"/>
+		<many-to-one target-entity="ApplicationType" field="type" inversed-by="applications">
+			<join-columns>
+				<join-column name="convention" referenced-column-name="start_date"/>
+				<join-column name="type_name" referenced-column-name="type_name"/>
+			</join-columns>
+		</many-to-one>
+	</entity>
+</doctrine-mapping>

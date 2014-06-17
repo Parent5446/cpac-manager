@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+	* This file is part of the CPAC website.
+	* Copyright 2014 Tyler Anthony Romeo
+	*
+	* The CPAC website is free software: you can redistribute it and/or modify
+	* it under the terms of the GNU Affero General Public License as published by
+	* the Free Software Foundation, either version 3 of the License, or
+	* (at your option) any later version.
+	*
+	* Foobar is distributed in the hope that it will be useful,
+	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	* GNU Affero General Public License for more details.
+	*
+	* You should have received a copy of the GNU Affero General Public License
+	* along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                    http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+	<entity name="Cpac\ManagerBundle\Entity\ApplicationType">
+		<id name="convention" association-key="true"/>
+		<id name="type_name" type="string" length="7"/>
+
+		<field name="enabled" type="boolean" nullable="false"/>
+		<field name="managing_role" type="string" length="64" nullable="false"/>
+		<field name="needs_payment" type="boolean" nullable="false"/>
+		<field name="max_entries" type="integer" nullable="false"/>
+		<field name="max_waiting" type="integer" nullable="false"/>
+
+		<one-to-many target-entity="Application" mapped-by="type" field="applications" fetch="EXTRA_LAZY"/>
+		<many-to-one target-entity="Convention" field="convention" inversed-by="application_types">
+			<join-column name="start_date" referenced-column-name="start_date"/>
+		</many-to-one>
+	</entity>
+</doctrine-mapping>
