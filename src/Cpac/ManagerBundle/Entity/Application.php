@@ -77,6 +77,15 @@ class Application
 	}
 
 	/**
+	 * Get the ID of the application
+	 *
+	 * @return int
+	 */
+	public function getId() {
+		return $this->id;
+	}
+
+	/**
 	 * Get the user that submitted the application
 	 *
 	 * @return User

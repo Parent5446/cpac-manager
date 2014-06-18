@@ -25,8 +25,8 @@
 		<field name="end_date" type="datetime" nullable="false"/>
 		<field name="active" type="boolean" unique="true" nullable="true"/>
 
-		<one-to-many target-entity="ApplicationType" mapped-by="convention" field="application_types"
-		             fetch="EXTRA_LAZY">
+		<one-to-many target-entity="ApplicationType" field="application_types"
+		             mapped-by="convention" fetch="EXTRA_LAZY">
 			<cascade>
 				<cascade-all/>
 			</cascade>

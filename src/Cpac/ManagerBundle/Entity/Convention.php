@@ -49,7 +49,7 @@ class Convention
 	public $active = false;
 
 	/**
-	 * @var \Doctrine\Common\Collections\ArrayCollection List of application types
+	 * @var ApplicationType[]|\Doctrine\Common\Collections\ArrayCollection List of application types
 	 */
 	public $application_types;
 

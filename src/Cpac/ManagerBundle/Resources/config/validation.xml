@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<constraint-mapping xmlns="http://symfony.com/schema/dic/constraint-mapping"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://symfony.com/schema/dic/constraint-mapping http://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
+	<class name="Cpac\ManagerBundle\Entity\ApplicationType">
+		<property name="type_name">
+			<constraint name="Choice">
+				<option name="choices">
+					<value>art</value>
+					<value>dealer</value>
+					<value>cosplay</value>
+					<value>amv</value>
+					<value>panel</value>
+				</option>
+			</constraint>
+		</property>
+	</class>
+	<class name="Cpac\ManagerBundle\Entity\Application">
+		<property name="state">
+			<constraint name="Choice">
+				<option name="choices">
+					<value>draft</value>
+					<value>submitted</value>
+					<value>approved</value>
+					<value>denied</value>
+					<value>waiting</value>
+					<value>verified</value>
+				</option>
+			</constraint>
+		</property>
+	</class>
+</constraint-mapping>

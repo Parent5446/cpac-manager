@@ -25,4 +25,45 @@
 	<import resource="@FOSUserBundle/Resources/config/routing/registration.xml" prefix="/register"/>
 	<import resource="@FOSUserBundle/Resources/config/routing/resetting.xml" prefix="/resetting"/>
 	<import resource="@FOSUserBundle/Resources/config/routing/change_password.xml" prefix="/profile"/>
+
+	<route id="con_info" path="/cons/{start_date}" methods="GET">
+		<default key="_controller">CpacManagerBundle:Convention:info</default>
+		<requirement key="start_date">[0-9]{4}-[0-9]{2}-[0-9]{2}</requirement>
+	</route>
+	<route id="con_modify" path="/cons/{start_date}" methods="PUT">
+		<default key="_controller">CpacManagerBundle:Convention:modify</default>
+		<requirement key="start_date">[0-9]{4}-[0-9]{2}-[0-9]{2}</requirement>
+	</route>
+	<route id="apptype_info" path="/cons/{start_date}/{type_name}" methods="GET">
+		<default key="_controller">CpacManagerBundle:ApplicationType:info</default>
+		<requirement key="start_date">[0-9]{4}-[0-9]{2}-[0-9]{2}</requirement>
+		<requirement key="type_name">(art|dealer|cosplay|amv|panel)</requirement>
+	</route>
+	<route id="apptype_modify" path="/cons/{start_date}/{type_name}" methods="PUT">
+		<default key="_controller">CpacManagerBundle:ApplicationType:info</default>
+		<requirement key="start_date">[0-9]{4}-[0-9]{2}-[0-9]{2}</requirement>
+		<requirement key="type_name">(art|dealer|cosplay|amv|panel)</requirement>
+	</route>
+	<route id="app_list" path="/cons/{start_date}/{type_name}/applications" methods="GET">
+		<default key="_controller">CpacManagerBundle:Application:list</default>
+		<requirement key="start_date">[0-9]{4}-[0-9]{2}-[0-9]{2}</requirement>
+		<requirement key="type_name">(art|dealer|cosplay|amv|panel)</requirement>
+	</route>
+	<route id="app_new" path="/cons/{start_date}/{type_name}/applications" methods="POST">
+		<default key="_controller">CpacManagerBundle:Application:new</default>
+		<requirement key="start_date">[0-9]{4}-[0-9]{2}-[0-9]{2}</requirement>
+		<requirement key="type_name">(art|dealer|cosplay|amv|panel)</requirement>
+	</route>
+	<route id="app_info" path="/cons/{start_date}/{type_name}/applications/{id}" methods="GET">
+		<default key="_controller">CpacManagerBundle:Application:info</default>
+		<requirement key="start_date">[0-9]{4}-[0-9]{2}-[0-9]{2}</requirement>
+		<requirement key="type_name">(art|dealer|cosplay|amv|panel)</requirement>
+		<requirement key="id">\d+</requirement>
+	</route>
+	<route id="app_modify" path="/cons/{start_date}/{type_name}/applications/{id}" methods="PUT">
+		<default key="_controller">CpacManagerBundle:Application:modify</default>
+		<requirement key="start_date">[0-9]{4}-[0-9]{2}-[0-9]{2}</requirement>
+		<requirement key="type_name">(art|dealer|cosplay|amv|panel)</requirement>
+		<requirement key="id">\d+</requirement>
+	</route>
 </routes>

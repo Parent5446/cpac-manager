@@ -70,7 +70,7 @@ class ApplicationType
 	public $max_waiting;
 
 	/**
-	 * @var \Doctrine\Common\Collections\ArrayCollection List of applications
+	 * @var Application[]|\Doctrine\Common\Collections\ArrayCollection List of applications
 	 */
 	public $applications;
 
