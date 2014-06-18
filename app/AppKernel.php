@@ -25,8 +25,16 @@
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
 
+/**
+ * CPAC kernel
+ */
 class AppKernel extends Kernel
 {
+	/**
+	 * Register all the builtin bundles as well as the application bundles
+	 *
+	 * @return array|\Symfony\Component\HttpKernel\Bundle\BundleInterface[]
+	 */
 	public function registerBundles() {
 		$bundles = [
 			new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
@@ -51,6 +59,11 @@ class AppKernel extends Kernel
 		return $bundles;
 	}
 
+	/**
+	 * Register the configuration
+	 *
+	 * @param LoaderInterface $loader
+	 */
 	public function registerContainerConfiguration( LoaderInterface $loader ) {
 		$loader->load( __DIR__ . '/config/config_' . $this->getEnvironment() . '.yml' );
 	}
