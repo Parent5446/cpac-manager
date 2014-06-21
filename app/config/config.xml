@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+	* This file is part of the CPAC website.
+	* Copyright 2014 Tyler Anthony Romeo
+	*
+	* The CPAC website is free software: you can redistribute it and/or modify
+	* it under the terms of the GNU Affero General Public License as published by
+	* the Free Software Foundation, either version 3 of the License, or
+	* (at your option) any later version.
+	*
+	* Foobar is distributed in the hope that it will be useful,
+	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	* GNU Affero General Public License for more details.
+	*
+	* You should have received a copy of the GNU Affero General Public License
+	* along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:twig="http://symfony.com/schema/dic/twig"
+           xmlns:framework="http://symfony.com/schema/dic/symfony"
+           xmlns:doctrine="http://symfony.com/schema/dic/doctrine"
+           xmlns:swiftmailer="http://symfony.com/schema/dic/swiftmailer"
+           xmlns:assetic="http://symfony.com/schema/dic/assetic">
+
+	<imports>
+		<import resource="parameters.xml" />
+		<import resource="security.yml" />
+		<import resource="@CpacManagerBundle/Resources/config/config.xml" />
+	</imports>
+
+	<framework:config default-locale="%locale%" http-method-override="true" secret="%secret%">
+		<!-- <framework:esi enabled="true" /> -->
+		<!-- <framework:translator enabled="true" fallback="%locale%" /> -->
+		<framework:router strict-requirements="%kernel.debug%" resource="%kernel.root_dir%/config/routing.xml" />
+		<framework:form enabled="true" />
+		<framework:csrf-protection enabled="true" />
+		<framework:validation enabled="true" enable-annotations="false" />
+		<framework:templating>
+			<framework:engine>twig</framework:engine>
+		</framework:templating>
+		<framework:session />
+		<framework:fragments enabled="true" />
+	</framework:config>
+
+	<assetic:config debug="%kernel.debug%" use-controller="false">
+		<assetic:filter name="cssrewrite" />
+	</assetic:config>
+
+	<twig:config debug="%kernel.debug%" strict-variables="%kernel.debug%" />
+
+	<doctrine:config>
+		<doctrine:dbal driver="%database_driver%"
+		               host="%database_host%"
+		               port="%database_port%"
+		               dbname="%database_name%"
+		               user="%database_user%"
+		               password="%database_password%"
+		               path="%database_path%"
+		               charset="UTF8" />
+		<doctrine:orm auto-generate-proxy-classes="%kernel.debug%" auto-mapping="true" />
+	</doctrine:config>
+
+	<swiftmailer:config transport="%mailer_transport%"
+	                    host="%mailer_host%"
+	                    username="%mailer_user%"
+	                    password="%mailer_password%">
+		<swiftmailer:spool type="memory" />
+	</swiftmailer:config>
+</container>

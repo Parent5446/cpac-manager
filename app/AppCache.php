@@ -26,6 +26,10 @@ require_once __DIR__.'/AppKernel.php';
 
 use Symfony\Bundle\FrameworkBundle\HttpCache\HttpCache;
 
+/**
+ * Symfony reverse-proxy implementation, in case Varnish is not
+ * available.
+ */
 class AppCache extends HttpCache
 {
 }

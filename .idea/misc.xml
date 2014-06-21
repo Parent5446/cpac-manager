@@ -16,7 +16,12 @@
       </profile-state>
     </entry>
   </component>
+  <component name="ProjectPlainTextFileTypeManager">
+    <file url="file://$PROJECT_DIR$/app/SymfonyRequirements.php" />
+    <file url="file://$PROJECT_DIR$/var/SymfonyRequirements.php" />
+  </component>
   <component name="ProjectResources">
+    <resource url="http://schema.phpunit.de/4.1/phpunit.xsd" location="$PROJECT_DIR$/vendor/phpunit/phpunit/phpunit.xsd" />
     <resource url="http://doctrine-project.org/schemas/orm/doctrine-mapping" location="$PROJECT_DIR$/vendor/doctrine/orm/doctrine-mapping.xsd" />
     <resource url="http://symfony.com/schema/dic/services" location="$PROJECT_DIR$/vendor/symfony/symfony/src/Symfony/Component/DependencyInjection/Loader/schema/dic/services/services-1.0.xsd" />
     <resource url="http://symfony.com/schema/dic/doctrine" location="$PROJECT_DIR$/vendor/doctrine/doctrine-bundle/Doctrine/Bundle/DoctrineBundle/Resources/config/schema/doctrine-1.0.xsd" />

@@ -5,7 +5,6 @@
       <entry url="file://$PROJECT_DIR$">
         <entryData>
           <resourceRoots>
-            <path value="file://$PROJECT_DIR$/web/bundles" />
             <path value="file://$PROJECT_DIR$/src/Cpac/ManagerBundle/Resources" />
             <path value="file://$PROJECT_DIR$/app/Resources" />
             <path value="file://$PROJECT_DIR$/src/Cpac/CommonBundle/Resources" />
