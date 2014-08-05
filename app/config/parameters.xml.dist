@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+	* This file is part of the CPAC website.
+	* Copyright 2014 Tyler Anthony Romeo
+	*
+	* The CPAC website is free software: you can redistribute it and/or modify
+	* it under the terms of the GNU Affero General Public License as published by
+	* the Free Software Foundation, either version 3 of the License, or
+	* (at your option) any later version.
+	*
+	* Foobar is distributed in the hope that it will be useful,
+	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	* GNU Affero General Public License for more details.
+	*
+	* You should have received a copy of the GNU Affero General Public License
+	* along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<container xmlns="http://symfony.com/schema/dic/services">
+	<parameters>
+		<parameter key="database_driver">pdo_sqlite</parameter>
+		<parameter key="database_host">DATABASE_HOST</parameter>
+		<parameter key="database_port">DATABASE_PORT</parameter>
+		<parameter key="database_name">DATABASE_NAME</parameter>
+		<parameter key="database_user">DATABASE_PASSWORD</parameter>
+		<parameter key="database_password">DATABASE_USER</parameter>
+		<parameter key="database_path">DATABASE_PATH</parameter>
+
+		<parameter key="mailer_transport">smtp</parameter>
+		<parameter key="mailer_host">127.0.0.1</parameter>
+		<parameter key="mailer_user">null</parameter>
+		<parameter key="mailer_password">null</parameter>
+
+		<parameter key="locale">en</parameter>
+		<parameter key="secret">CHANGE THIS!!!!</parameter>
+
+		<parameter key="debug_toolbar">true</parameter>
+		<parameter key="debug_redirects">false</parameter>
+		<parameter key="use_assetic_controller">true</parameter>
+	</parameters>
+</container>
