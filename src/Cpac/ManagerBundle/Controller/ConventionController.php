@@ -26,7 +26,9 @@
 namespace Cpac\ManagerBundle\Controller;
 
 use Cpac\ManagerBundle\Entity\Convention;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\View\View;
+use FOS\RestBundle\Routing\ClassResourceInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,35 +41,27 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @package CpacManager\Controller
  */
-class ConventionController extends Controller
+class ConventionController extends FOSRestController implements ClassResourceInterface
 {
 	/**
 	 * Get info about a convention
 	 *
 	 * @param Convention $convention
 	 *
-	 * @return JsonResponse
+	 * @return View
 	 */
-	public function infoAction( Convention $convention ) {
-		/** @var \Symfony\Component\Routing\Generator\UrlGeneratorInterface $urlGenerator */
-		$urlGenerator = $this->get( 'router' );
+	public function getAction( Convention $convention ) {
+		return $this->view( $convention );
+	}
 
-		$typeUrls = [ ];
-		/** @var \Cpac\ManagerBundle\Entity\ApplicationType $type */
-		foreach ( $convention->application_types as $type ) {
-			$retval[ $type->enabled ][ $type->getTypeName() ] = $urlGenerator->generate(
-				'apptype_info',
-				[ 'conYear' => $convention->start_date, 'appType' => $type->getTypeName() ]
-			);
-		}
-
-		return new JsonResponse( [
-			'active' => $convention->active,
-			'start_date' => $convention->start_date,
-			'end_date' => $convention->end_date,
-			'active_types' => $typeUrls[ true ],
-			'inactive_types' => $typeUrls[ false ],
-		] );
+	/**
+	 * List all conventions
+	 *
+	 * @return View
+	 */
+	public function cgetAction() {
+		return $this->view(
+			$this->getDoctrine()->getRepository( 'CpacManagerBundle:Convention' )->findAll() );
 	}
 
 	/**
@@ -80,10 +74,10 @@ class ConventionController extends Controller
 	 * @param Request $request Request with PUT data
 	 * @param Convention $convention
 	 *
-	 * @return JsonResponse
+	 * @return View
 	 * @throws HttpException
 	 */
-	public function modifyAction( Request $request, Convention $convention ) {
+	public function putAction( Request $request, Convention $convention ) {
 		$convention->start_date = new \DateTime( $request->get( 'start_date' ) );
 		$convention->end_date = new \DateTime( $request->get( 'end-date' ) );
 		$convention->active = $request->get( 'active' );
@@ -92,9 +86,35 @@ class ConventionController extends Controller
 		$validator = $this->get( 'validator' );
 		$errors = $validator->validate( $convention );
 		if ( $errors ) {
-			return new Response( (string)$errors );
+			return new Response( (string)$errors, Response::HTTP_BAD_REQUEST );
 		}
 
-		return $this->infoAction( $convention );
+		return $this->getAction( $convention );
+	}
+
+	/**
+	 * Make a new convention
+	 *
+	 * @param Request $request
+	 *
+	 * @return View|Response
+	 */
+	public function postAction( Request $request ) {
+		$convention = new Convention( new \DateTime( $request->get( 'start_date' ) ) );
+		$convention->end_date = new \DateTime( $request->get( 'end_date' ) );
+		$convention->active = (bool)$request->get( 'active' );
+
+		/** @var \Symfony\Component\Validator\Validator $validator */
+		$validator = $this->get( 'validator' );
+		$errors = $validator->validate( $convention );
+		if ( $errors ) {
+			return new Response( (string)$errors, Response::HTTP_BAD_REQUEST );
+		}
+
+		$em = $this->getDoctrine()->getManager();
+		$em->persist( $convention );
+		$em->flush();
+
+		return $this->getAction( $convention );
 	}
 }

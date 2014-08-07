@@ -1,0 +1,13 @@
+{% extends "CpacCommonBundle::layout.html.twig" %}
+
+{% block scripts %}
+{% javascripts '@CpacCommonBundle/Resources/public/vendor/angular/angular.js' %}
+	<script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% endblock %}
+
+{% block body %}
+<section id="application" ng-app>
+	Test text
+</section>
+{% endblock %}

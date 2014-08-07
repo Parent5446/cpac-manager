@@ -45,15 +45,17 @@ class AppKernel extends Kernel
 			new Symfony\Bundle\AsseticBundle\AsseticBundle(),
 			new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
 			new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+			new \JMS\SerializerBundle\JMSSerializerBundle(),
 			new FOS\UserBundle\FOSUserBundle(),
+			new FOS\RestBundle\FOSRestBundle(),
 			new Cpac\ManagerBundle\CpacManagerBundle(),
 			new Cpac\CommonBundle\CpacCommonBundle(),
 		];
 
 		if ( in_array( $this->getEnvironment(), [ 'dev', 'test' ] ) ) {
-			$bundles[ ] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-			$bundles[ ] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
-			$bundles[ ] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+			$bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
+			$bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
+			$bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
 		}
 
 		return $bundles;

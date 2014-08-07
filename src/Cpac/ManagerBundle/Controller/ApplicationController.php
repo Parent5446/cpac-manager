@@ -28,11 +28,11 @@ namespace Cpac\ManagerBundle\Controller;
 use Cpac\ManagerBundle\Entity\Application;
 use Cpac\ManagerBundle\Entity\ApplicationType;
 use Cpac\ManagerBundle\Entity\User;
-use Doctrine\Common\Collections\Criteria;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use FOS\RestBundle\Routing\ClassResourceInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -40,8 +40,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @package CpacManager\Controller
  */
-class ApplicationController extends Controller
+class ApplicationController extends FOSRestController implements ClassResourceInterface
 {
+	use CommonControllerTrait;
+
 	/**
 	 * List all applications under a given type
 	 *
@@ -51,49 +53,12 @@ class ApplicationController extends Controller
 	 * @return JsonResponse
 	 * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
 	 */
-	public function listAction( Request $request, ApplicationType $appType ) {
+	public function cgetAction( Request $request, ApplicationType $appType ) {
 		if ( !$this->get( 'security.context' )->isGranted( 'ROLE_ADMIN' ) ) {
 			throw $this->createAccessDeniedException();
 		}
 
-		$limit = $request->query->get( 'limit' );
-		$continue = $request->query->get( 'continue' );
-		$criteria = Criteria::create();
-		if ( $continue !== null ) {
-			foreach ( $continue as $key => $value ) {
-				$criteria->andWhere( Criteria::expr()->gt( $key, $value ) );
-			}
-		}
-
-		/** @var Application[]|\Doctrine\Common\Collections\ArrayCollection $applications */
-		$applications = $appType->applications->matching( $criteria )->slice( 0, $limit );
-
-		// Use initial row to populate the result structure
-		/** @var \Symfony\Component\Routing\Generator\UrlGeneratorInterface $urlGenerator */
-		$urlGenerator = $this->get( 'router' );
-		$retval = [
-			'con_year' => $appType->getConvention()->start_date->format( 'Y' ),
-			'type_name' => $appType,
-			'type_info' => $urlGenerator->generate(
-					'apptype_info',
-					[ 'conYear' => $appType->getConvention()->start_date, 'appType' => $appType->getTypeName() ]
-				),
-			'applications' => [ ],
-		];
-
-		// Add remaining applications to the data structure
-		foreach ( $applications as $application ) {
-			$retval[ 'applications' ][ $application->getId() ] = $urlGenerator->generate(
-				'app_info',
-				[
-					'conYear' => $appType->getConvention()->start_date,
-					'appType' => $appType,
-					'appId' => $application->getId(),
-				]
-			);
-		}
-
-		return new JsonResponse( $retval );
+		return $this->view( $this->applyContinueLimit( $appType->applications, $request ) );
 	}
 
 	/**
@@ -110,33 +75,7 @@ class ApplicationController extends Controller
 			throw $this->createAccessDeniedException();
 		}
 
-		$limit = $request->query->get( 'limit' );
-		$continue = $request->query->get( 'continue' );
-		$criteria = Criteria::create();
-		if ( $continue !== null ) {
-			foreach ( $continue as $key => $value ) {
-				$criteria->andWhere( Criteria::expr()->gt( $key, $value ) );
-			}
-		}
-
-		/** @var Application[]|\Doctrine\Common\Collections\ArrayCollection $applications */
-		$applications = $user->applications->matching( $criteria )->slice( 0, $limit );
-
-		$retval = [ 'user_id' => $user->getId(), 'applications' => [ ] ];
-		/** @var \Symfony\Component\Routing\Generator\UrlGeneratorInterface $urlGenerator */
-		$urlGenerator = $this->get( 'router' );
-		foreach ( $applications as $application ) {
-			$retval[ 'applications' ][ $application->getId() ] = $urlGenerator->generate(
-				'app_info',
-				[
-					'conYear' => $application->getApplicationType()->getConvention()->start_date,
-					'appType' => $application->getApplicationType()->getTypeName(),
-					'appId' => $application->getId(),
-				]
-			);
-		}
-
-		return new JsonResponse( $retval );
+		return $this->view( $this->applyContinueLimit( $user->applications, $request ) );
 	}
 
 	/**
@@ -147,19 +86,14 @@ class ApplicationController extends Controller
 	 * @return JsonResponse
 	 * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
 	 */
-	public function infoAction( Application $application ) {
-		if ( (string)$this->getUser() !== (string)$application->getUser() ) {
+	public function getAction( Application $application ) {
+		if ( !$this->get( 'security.context' )->isGranted( 'ROLE_ADMIN' )
+			&& (string)$this->getUser() !== (string)$application->getUser()
+		) {
 			throw $this->createAccessDeniedException();
 		}
 
-		return new JsonResponse( [
-			'application_id' => $application->getId(),
-			'con_year' => $application->getApplicationType()->getConvention()->start_date,
-			'type_name' => $application->getApplicationType()->getTypeName(),
-			'user_id' => $application->getUser()->getId(),
-			'application_state' => $application->state,
-			'application_data' => $application->data,
-		] );
+		return $this->view( $application );
 	}
 
 	/**
@@ -170,7 +104,7 @@ class ApplicationController extends Controller
 	 *
 	 * @return JsonResponse|Response
 	 */
-	public function newAction( Request $request, ApplicationType $appType ) {
+	public function postAction( Request $request, ApplicationType $appType ) {
 		$application = new Application( $appType, $this->getUser() );
 		$application->state = $request->request->get( 'application_state' );
 		$application->data = $request->request->get( 'application_data' );
@@ -179,13 +113,13 @@ class ApplicationController extends Controller
 		$validator = $this->get( 'validator' );
 		$errors = $validator->validate( $application );
 		if ( $errors ) {
-			return new Response( (string)$errors );
+			return new Response( (string)$errors, Response::HTTP_BAD_REQUEST );
 		}
 
-		$em = $this->getDoctrine()->getManager( 'CpacManagerBundle:Application' );
+		$em = $this->getDoctrine()->getManager();
 		$em->persist( $application );
 		$em->flush();
 
-		return $this->infoAction( $application );
+		return $this->getAction( $application );
 	}
 }

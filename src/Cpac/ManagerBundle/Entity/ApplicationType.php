@@ -103,4 +103,13 @@ class ApplicationType
 	public function getTypeName() {
 		return $this->type_name;
 	}
+
+	/**
+	 * Get the number of applications under this type
+	 *
+	 * @return int
+	 */
+	public function getNumApplication() {
+		return $this->applications->count();
+	}
 }

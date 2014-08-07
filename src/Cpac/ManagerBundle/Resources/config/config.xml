@@ -17,11 +17,25 @@
 	* along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 -->
 <container xmlns="http://symfony.com/schema/dic/services"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xmlns:fos_user="http://example.org/schema/dic/fos_user"
-           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+           xmlns:fos-rest="http://example.org/schema/dic/fos_rest"
+           xmlns:sensio-framework-extra="http://symfony.com/schema/dic/symfony_extra">
 	<fos_user:config
 		db-driver="orm"
 		firewall-name="main"
-		user-class="Cpac\ManagerBundle\Entity\User"/>
+		user-class="Cpac\ManagerBundle\Entity\User" />
+
+	<sensio-framework-extra:config>
+		<sensio-framework-extra:view annotations="false" />
+	</sensio-framework-extra:config>
+
+	<fos-rest:config>
+		<fos-rest:routing-loader default-format="json" />
+		<fos-rest:view view-response-listener="force">
+			<fos-rest:templating-format name="html">false</fos-rest:templating-format>
+		</fos-rest:view>
+		<fos-rest:format-listener>
+			<rule path="^/" fallback_format="json" />
+		</fos-rest:format-listener>
+	</fos-rest:config>
 </container>

@@ -55,8 +55,39 @@ class Convention
 
 	/**
 	 * Make a new convention with an empty set of application types
+	 *
+	 * @param \DateTime $start_date Start date of the convention
 	 */
-	public function __construct() {
+	public function __construct( \DateTime $start_date ) {
+		$this->start_date = $start_date;
 		$this->application_types = new ArrayCollection();
+
+		$this->application_types[] = new ApplicationType( $this, 'art' );
+		$this->application_types[] = new ApplicationType( $this, 'dealer' );
+		$this->application_types[] = new ApplicationType( $this, 'cosplay' );
+		$this->application_types[] = new ApplicationType( $this, 'amv' );
+		$this->application_types[] = new ApplicationType( $this, 'panel' );
+	}
+
+	/**
+	 * Get a list of active application types
+	 *
+	 * @return \Doctrine\Common\Collections\Collection|static
+	 */
+	public function getActiveTypes() {
+		return $this->application_types->filter( function ( ApplicationType $type ) {
+			return $type->enabled === true;
+		} );
+	}
+
+	/**
+	 * Get a list of inactive application types
+	 *
+	 * @return \Doctrine\Common\Collections\Collection|static
+	 */
+	public function getInactiveTypes() {
+		return $this->application_types->filter( function ( ApplicationType $type ) {
+			return $type->enabled === false;
+		} );
 	}
 }

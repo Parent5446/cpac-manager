@@ -16,18 +16,10 @@
 	* You should have received a copy of the GNU Affero General Public License
 	* along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 -->
-<routes xmlns="http://symfony.com/schema/routing"
+<routes xmlns="http://friendsofsymfony.github.com/schema/rest"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
-
-	<import resource="@FOSUserBundle/Resources/config/routing/security.xml"/>
-	<import resource="@FOSUserBundle/Resources/config/routing/profile.xml" prefix="/profile"/>
-	<import resource="@FOSUserBundle/Resources/config/routing/registration.xml" prefix="/register"/>
-	<import resource="@FOSUserBundle/Resources/config/routing/resetting.xml" prefix="/resetting"/>
-	<import resource="@FOSUserBundle/Resources/config/routing/change_password.xml" prefix="/profile"/>
-	<import resource="@CpacManagerBundle/Resources/config/rest.xml" type="rest" />
-
-	<route id="root" path="/" methods="GET">
-		<default key="_controller">CpacManagerBundle:Frontend:index</default>
-	</route>
+        xsi:schemaLocation="http://friendsofsymfony.github.com/schema/rest https://raw.github.com/FriendsOfSymfony/FOSRestBundle/master/Resources/config/schema/routing/rest_routing-1.0.xsd">
+	<import id="conventions" type="rest" resource="Cpac\ManagerBundle\Controller\ConventionController" />
+	<import id="apptypes" type="rest" parent="conventions" resource="Cpac\ManagerBundle\Controller\ApptypeController" />
+	<import id="applications" type="rest" parent="apptypes" resource="Cpac\ManagerBundle\Controller\ApplicationController" />
 </routes>

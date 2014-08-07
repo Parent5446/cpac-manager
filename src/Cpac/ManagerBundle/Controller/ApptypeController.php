@@ -26,9 +26,11 @@
 namespace Cpac\ManagerBundle\Controller;
 
 use Cpac\ManagerBundle\Entity\ApplicationType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Cpac\ManagerBundle\Entity\Convention;
+use FOS\RestBundle\View\View;
 use Symfony\Component\Validator\Constraints as Assert;
+use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Routing\ClassResourceInterface;
 
 /**
  * Controller for providing information on an certain application type for a
@@ -36,30 +38,17 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @package CpacManager\Controller
  */
-class ApplicationTypeController extends Controller
+class ApptypeController extends FOSRestController implements ClassResourceInterface
 {
 	/**
 	 * Get information about a specific application type from a specific convention
 	 *
+	 * @param Convention $convention Unused, but needed for the REST auto-route generation to work
 	 * @param ApplicationType $appType
 	 *
-	 * @return JsonResponse
+	 * @return View
 	 */
-	public function infoAction( ApplicationType $appType ) {
-		$conYear = $appType->getConvention()->start_date->format( 'Y' );
-
-		return new JsonResponse( [
-			'con_year' => $conYear,
-			'type_name' => $appType->getTypeName(),
-			'enabled' => $appType->enabled,
-			'needs_payment' => $appType->needs_payment,
-			'max_entries' => $appType->max_entries,
-			'max_waiting' => $appType->max_waiting,
-			'num_applications' => $appType->applications->count(),
-			'applications' => $this->get( 'router' )->generate(
-					'app_list',
-					[ 'conYear' => $conYear, 'appType' => $appType->getTypeName() ]
-				),
-		] );
+	public function getAction( Convention $convention, ApplicationType $appType ) {
+		return $this->view( $appType );
 	}
 }
