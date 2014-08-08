@@ -22,8 +22,8 @@
 		<parameter key="database_host">DATABASE_HOST</parameter>
 		<parameter key="database_port">DATABASE_PORT</parameter>
 		<parameter key="database_name">DATABASE_NAME</parameter>
-		<parameter key="database_user">DATABASE_PASSWORD</parameter>
-		<parameter key="database_password">DATABASE_USER</parameter>
+		<parameter key="database_user">DATABASE_USER</parameter>
+		<parameter key="database_password">DATABASE_PASSWORD</parameter>
 		<parameter key="database_path">DATABASE_PATH</parameter>
 
 		<parameter key="mailer_transport">smtp</parameter>
